@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import io.github.palexdev.materialfx.controls.MFXButton?>
+<?import io.github.palexdev.materialfx.controls.MFXListView?>
+<?import io.github.palexdev.materialfx.controls.MFXTextField?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.LineChart?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.Pane?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="798.0" prefWidth="1027.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.dmi_weatherapp.HelloController">
+   <center>
+      <Pane prefHeight="200.0" prefWidth="686.0" BorderPane.alignment="CENTER">
+         <children>
+            <LineChart fx:id="topChart" layoutX="54.0" layoutY="87.0" prefHeight="315.0" prefWidth="564.0">
+              <xAxis>
+                <CategoryAxis side="BOTTOM" />
+              </xAxis>
+              <yAxis>
+                <NumberAxis side="LEFT" />
+              </yAxis>
+            </LineChart>
+            <ChoiceBox fx:id="topDataTypeChoice" layoutX="618.0" layoutY="25.0" onMousePressed="#topDataTypeValgt" prefWidth="150.0" />
+            <DatePicker fx:id="topRightDate" layoutX="420.0" layoutY="25.0" onAction="#topRightDateSelected" />
+            <DatePicker fx:id="topLeftDate" layoutX="220.0" layoutY="25.0" onAction="#topLeftDateSelected" />
+            <MFXButton layoutX="370.0" layoutY="74.0" onAction="#generateTop" text="Generate" />
+            <LineChart fx:id="bottomChart" layoutX="54.0" layoutY="477.0" prefHeight="315.0" prefWidth="559.0">
+               <xAxis>
+                  <CategoryAxis side="BOTTOM" />
+               </xAxis>
+               <yAxis>
+                  <NumberAxis side="LEFT" />
+               </yAxis>
+            </LineChart>
+            <ChoiceBox fx:id="bottomDataTypeChoice" layoutX="618.0" layoutY="409.0" onMousePressed="#bottomDataTypeValgt" prefWidth="150.0" />
+            <DatePicker fx:id="bottomRightDate" layoutX="420.0" layoutY="409.0" onAction="#bottomRightDateSelected" />
+            <DatePicker fx:id="bottomLeftDate" layoutX="220.0" layoutY="409.0" onAction="#bottomDateLeftSelected" />
+            <MFXButton layoutX="370.0" layoutY="457.0" onAction="#generateBottom" text="Generate" />
+            <ChoiceBox fx:id="topIntervalChoice" layoutX="41.0" layoutY="25.0" onMousePressed="#topIntervalValgt" prefWidth="150.0" />
+            <ChoiceBox fx:id="bottomIntervalChoice" layoutX="41.0" layoutY="409.0" onMousePressed="#bottomIntervalValgt" prefWidth="150.0" />
+            <Label fx:id="topMiddelværdi" layoutX="663.0" layoutY="152.0" prefHeight="17.0" prefWidth="60.0" text="Label" />
+            <Label fx:id="topMedian" layoutX="663.0" layoutY="190.0" prefHeight="17.0" prefWidth="60.0" text="Label" />
+            <Label fx:id="topMidAfMidt" layoutX="663.0" layoutY="228.0" prefHeight="17.0" prefWidth="60.0" text="Label" />
+            <Label fx:id="bottomMiddelværdi" layoutX="663.0" layoutY="541.0" prefHeight="17.0" prefWidth="60.0" text="Label" />
+            <Label fx:id="bottomMedian" layoutX="663.0" layoutY="579.0" prefHeight="17.0" prefWidth="60.0" text="Label" />
+            <Label fx:id="bottomMidAfMidt" layoutX="663.0" layoutY="617.0" prefHeight="17.0" prefWidth="60.0" text="Label" />
+         </children>
+      </Pane>
+   </center>
+   <left>
+      <Pane prefHeight="654.0" prefWidth="218.0" BorderPane.alignment="CENTER">
+         <children>
+            <MFXTextField fx:id="searchBar" floatMode="DISABLED" layoutX="15.0" layoutY="25.0" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="23.0" prefWidth="149.0" promptText="Search..." />
+            <Button fx:id="searchButton" layoutX="170.0" layoutY="25.0" mnemonicParsing="false" onAction="#search" prefHeight="16.0" prefWidth="43.0">
+               <graphic>
+                  <ImageView fitHeight="15.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true" />
+               </graphic>
+            </Button>
+            <MFXListView fx:id="vejrStationList" layoutX="15.0" layoutY="87.0" onMouseClicked="#vejrStationClicked" prefHeight="508.0" prefWidth="200.0" thumbColor="#fcfcfc" />
+            <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="34.0" layoutY="620.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@MDI logo.png" />
+               </image>
+            </ImageView>
+         </children>
+      </Pane>
+   </left>
+</BorderPane>
