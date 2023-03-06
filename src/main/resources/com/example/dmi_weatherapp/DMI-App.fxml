@@ -15,6 +15,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.Pane?>
 
+<?import javafx.scene.control.ListView?>
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="798.0" prefWidth="1027.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.dmi_weatherapp.HelloController">
    <center>
       <Pane prefHeight="200.0" prefWidth="686.0" BorderPane.alignment="CENTER">
@@ -63,7 +64,7 @@
                   <ImageView fitHeight="15.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true" />
                </graphic>
             </Button>
-            <MFXListView fx:id="vejrStationList" layoutX="15.0" layoutY="87.0" onMouseClicked="#vejrStationClicked" prefHeight="508.0" prefWidth="200.0" thumbColor="#fcfcfc" />
+            <ListView fx:id="vejrStationList" layoutX="15.0" layoutY="87.0" onMouseClicked="#vejrStationClicked" prefHeight="508.0" prefWidth="200.0"/>
             <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="34.0" layoutY="620.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@MDI logo.png" />

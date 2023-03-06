@@ -6,7 +6,6 @@ import java.sql.SQLException;
 
 public class SingletonStrategy {
 
-
     private static Connection instance;
 
 
