@@ -28,7 +28,7 @@
                 <NumberAxis side="LEFT" />
               </yAxis>
             </LineChart>
-            <ChoiceBox fx:id="topDataTypeChoice" layoutX="618.0" layoutY="25.0" onMousePressed="#topDataTypeValgt" prefWidth="150.0" />
+            <ChoiceBox fx:id="topDataTypeChoice" layoutX="618.0" layoutY="25.0" prefWidth="150.0" />
             <DatePicker fx:id="topRightDate" layoutX="420.0" layoutY="25.0" onAction="#topRightDateSelected" />
             <DatePicker fx:id="topLeftDate" layoutX="220.0" layoutY="25.0" onAction="#topLeftDateSelected" />
             <MFXButton layoutX="370.0" layoutY="74.0" onAction="#generateTop" text="Generate" />
@@ -40,7 +40,7 @@
                   <NumberAxis side="LEFT" />
                </yAxis>
             </LineChart>
-            <ChoiceBox fx:id="bottomDataTypeChoice" layoutX="618.0" layoutY="409.0" onMousePressed="#bottomDataTypeValgt" prefWidth="150.0" />
+            <ChoiceBox fx:id="bottomDataTypeChoice" layoutX="618.0" layoutY="409.0" prefWidth="150.0" />
             <DatePicker fx:id="bottomRightDate" layoutX="420.0" layoutY="409.0" onAction="#bottomRightDateSelected" />
             <DatePicker fx:id="bottomLeftDate" layoutX="220.0" layoutY="409.0" onAction="#bottomDateLeftSelected" />
             <MFXButton layoutX="370.0" layoutY="457.0" onAction="#generateBottom" text="Generate" />

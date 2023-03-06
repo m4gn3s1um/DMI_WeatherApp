@@ -31,6 +31,7 @@ public class HelloController
     private ListView vejrStationList;
     @FXML
     private DatePicker topRightDate, topLeftDate, bottomRightDate, bottomLeftDate;
+    private String topFirstDate, topSecondDate, bottomFirstDate, bottomSecondDate, dataType;
     @FXML
     private MFXButton generateTop, generateBottom;
     @FXML
