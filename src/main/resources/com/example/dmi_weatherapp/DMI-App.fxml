@@ -22,7 +22,7 @@
          <children>
             <LineChart fx:id="topChart" layoutX="54.0" layoutY="87.0" prefHeight="315.0" prefWidth="564.0">
               <xAxis>
-                <CategoryAxis side="BOTTOM" />
+                <NumberAxis side="BOTTOM" />
               </xAxis>
               <yAxis>
                 <NumberAxis side="LEFT" />
