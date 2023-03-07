@@ -109,15 +109,13 @@ public class HelloController
         XYChart.Series<Number, Number> degrees = new XYChart.Series<Number,Number>();
 
 
-        //degrees.getData().add(new XYChart.Data<>("Date",String.valueOf(topIntervalChoice)));
-
-
         List<Måling> målinger = vjs.getMålingData(6041);
 
         System.out.println(målinger.get(0));
 
            for (Måling mål : målinger){
-               degrees.getData().add(new XYChart.Data<>(mål.getMålingID(),Double.valueOf(mål.getNedbør())));
+               degrees.getData().add(new XYChart.Data<>(Integer.valueOf(mål.getMålDato().substring(8, 10)),Double.valueOf(mål.getNedbør())));
+               System.out.println(Integer.valueOf(mål.getMålDato().substring(8, 10)));
                System.out.println(mål.getMålingID());
            }
         topChart.getData().addAll(degrees);
