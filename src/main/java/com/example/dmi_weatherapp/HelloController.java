@@ -1,5 +1,6 @@
 package com.example.dmi_weatherapp;
 
+import com.example.dmi_weatherapp.Model.Måling;
 import com.example.dmi_weatherapp.Model.VejrStation;
 import com.example.dmi_weatherapp.DAO.VejrStationDao;
 import com.example.dmi_weatherapp.DAO_Impl.VejrStationDaoImpl;
@@ -19,6 +20,7 @@ import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 
 import java.awt.*;
+import java.security.spec.ECField;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -95,62 +97,32 @@ public class HelloController
     } //Opdaterer en String med dato, som kan bruges til SQL
 
     public void generateTop(ActionEvent actionEvent) {
+        System.out.println("GenerateTop");
         fjernVisibility();
+        topChart.setAnimated(false);
         topChart.setVisible(true);
-        Axis<String> xAxis = topChart.getXAxis();
+
+        Axis<Number> xAxis = topChart.getXAxis();
         xAxis.setLabel("Date");
 
         Axis<String> yAxis = topChart.getYAxis();
         yAxis.setLabel("Weather");
 
-        XYChart.Series<String, String> degrees = new XYChart.Series<String,String>();
-        degrees.setName(String.valueOf(topIntervalChoice));
-
-        degrees.getData().add(new XYChart.Data<>("Date",String.valueOf(topIntervalChoice)));
+        XYChart.Series<Number, Number> degrees = new XYChart.Series<Number,Number>();
 
 
-        /*degrees.getData().add(new XYChart.Data<>(1,5));
-        degrees.getData().add(new XYChart.Data<>(2,5));
-        degrees.getData().add(new XYChart.Data<>(3,8));
-        degrees.getData().add(new XYChart.Data<>(4,7));
-        degrees.getData().add(new XYChart.Data<>(5,6));
-        degrees.getData().add(new XYChart.Data<>(6,9));*/
+        //degrees.getData().add(new XYChart.Data<>("Date",String.valueOf(topIntervalChoice)));
 
-        topChart.getData().add(degrees);
 
-        /*XYChart.Series<Number, Number> wind = new XYChart.Series<Number,Number>();
-        wind.setName("Vind");
+        List<Måling> målinger = vjs.getMålingData(6041);
 
-        wind.getData().add(new XYChart.Data<>(0,4.6));
-        wind.getData().add(new XYChart.Data<>(0.5,5.8));
-        wind.getData().add(new XYChart.Data<>(1,2.2));
-        wind.getData().add(new XYChart.Data<>(1.5,1.6));
-        wind.getData().add(new XYChart.Data<>(2,3.1));
-        wind.getData().add(new XYChart.Data<>(2.5,3.3));
-        wind.getData().add(new XYChart.Data<>(3,4.1));
-        wind.getData().add(new XYChart.Data<>(3.5,7.8));
-        wind.getData().add(new XYChart.Data<>(4,5.1));
-        wind.getData().add(new XYChart.Data<>(4.5,7.4));
-        wind.getData().add(new XYChart.Data<>(5,7.3));
-        wind.getData().add(new XYChart.Data<>(5.5,7.8));
-        wind.getData().add(new XYChart.Data<>(6,9.4));
-        wind.getData().add(new XYChart.Data<>(6.5,6.4));
+        System.out.println(målinger.get(0));
 
-        topChart.getData().add(wind);
-
-        XYChart.Series<Number, Number> rain = new XYChart.Series<Number,Number>();
-        rain.setName("Nedbør");
-
-        rain.getData().add(new XYChart.Data<>(0,0));
-        rain.getData().add(new XYChart.Data<>(1,0));
-        rain.getData().add(new XYChart.Data<>(2,0));
-        rain.getData().add(new XYChart.Data<>(3,0));
-        rain.getData().add(new XYChart.Data<>(4,3.3));
-        rain.getData().add(new XYChart.Data<>(5,0));
-        rain.getData().add(new XYChart.Data<>(6,0));
-
-        topChart.getData().add(rain);*/
-
+           for (Måling mål : målinger){
+               degrees.getData().add(new XYChart.Data<>(mål.getMålingID(),Double.valueOf(mål.getNedbør())));
+               System.out.println(mål.getMålingID());
+           }
+        topChart.getData().addAll(degrees);
     } //Opsætter data i øverste chart
 
     public void bottomRightDateSelected(ActionEvent actionEvent) {
@@ -175,54 +147,19 @@ public class HelloController
         Axis<String> xAxis = bottomChart.getXAxis();
         xAxis.setLabel("Date");
 
-        Axis<String> yAxis = bottomChart.getYAxis();
+        Axis<Number> yAxis = bottomChart.getYAxis();
         yAxis.setLabel("Weather");
 
         XYChart.Series<String, String> degrees = new XYChart.Series<String,String>();
         degrees.setName(String.valueOf(bottomIntervalChoice));
 
-        degrees.getData().add(new XYChart.Data<>("Date",String.valueOf(bottomIntervalChoice)));
-        /*degrees.getData().add(new XYChart.Data<>(1,5));
-        degrees.getData().add(new XYChart.Data<>(2,5));
-        degrees.getData().add(new XYChart.Data<>(3,8));
-        degrees.getData().add(new XYChart.Data<>(4,7));
-        degrees.getData().add(new XYChart.Data<>(5,6));
-        degrees.getData().add(new XYChart.Data<>(6,9));*/
+        System.out.println(målinger.get(0));
 
-        topChart.getData().add(degrees);
-
-        /*XYChart.Series<Number, Number> wind = new XYChart.Series<Number,Number>();
-        wind.setName("Vind");
-
-        wind.getData().add(new XYChart.Data<>(0,4.6));
-        wind.getData().add(new XYChart.Data<>(0.5,5.8));
-        wind.getData().add(new XYChart.Data<>(1,2.2));
-        wind.getData().add(new XYChart.Data<>(1.5,1.6));
-        wind.getData().add(new XYChart.Data<>(2,3.1));
-        wind.getData().add(new XYChart.Data<>(2.5,3.3));
-        wind.getData().add(new XYChart.Data<>(3,4.1));
-        wind.getData().add(new XYChart.Data<>(3.5,7.8));
-        wind.getData().add(new XYChart.Data<>(4,5.1));
-        wind.getData().add(new XYChart.Data<>(4.5,7.4));
-        wind.getData().add(new XYChart.Data<>(5,7.3));
-        wind.getData().add(new XYChart.Data<>(5.5,7.8));
-        wind.getData().add(new XYChart.Data<>(6,9.4));
-        wind.getData().add(new XYChart.Data<>(6.5,6.4));
-
-        bottomChart.getData().add(wind);
-
-        XYChart.Series<Number, Number> rain = new XYChart.Series<Number,Number>();
-        rain.setName("Nedbør");
-
-        rain.getData().add(new XYChart.Data<>(0,0));
-        rain.getData().add(new XYChart.Data<>(1,0));
-        rain.getData().add(new XYChart.Data<>(2,0));
-        rain.getData().add(new XYChart.Data<>(3,0));
-        rain.getData().add(new XYChart.Data<>(4,3.3));
-        rain.getData().add(new XYChart.Data<>(5,0));
-        rain.getData().add(new XYChart.Data<>(6,0));
-
-        bottomChart.getData().add(rain);*/
+           for (Måling mål : målinger){
+               degrees.getData().add(new XYChart.Data<>(mål.getMålingID(),Double.valueOf(mål.getNedbør())));
+               System.out.println(mål.getMålingID());
+           }
+        bottomChart.getData().addAll(degrees);
     } //opsætter data i nederste chart
 
     public void search(ActionEvent actionEvent) {
