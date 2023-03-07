@@ -10,4 +10,8 @@ public interface VejrStationDao {
     public List<VejrStation> getAllVejrStationer();
 
     public List<VejrStation> getSearchedStation(String query);
+
+    public List<Float> getTopChartData(String type, int sID, String fDate, String sDate);
+
+    public List<Måling> getMålingData(int sID);
 }

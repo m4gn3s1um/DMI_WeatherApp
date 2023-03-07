@@ -32,7 +32,7 @@ public class HelloController
     private ListView vejrStationList;
     @FXML
     private DatePicker topRightDate, topLeftDate, bottomRightDate, bottomLeftDate;
-    private String topFirstDate, topSecondDate, bottomFirstDate, bottomSecondDate, dataType;
+    private String topFirstDate, topSecondDate, bottomFirstDate, bottomSecondDate, topDataType, bottomDataType;
     @FXML
     private MFXButton generateTop, generateBottom;
     @FXML
@@ -123,6 +123,10 @@ public class HelloController
         topChart.getData().addAll(degrees);
     } //Opsætter data i øverste chart
 
+    public void setTopLabels(){
+        //Beregn middelværdi, median og midt af midel, og setLabels
+    } //Median og middelværdi for top chart
+
     public void bottomRightDateSelected(ActionEvent actionEvent) {
         if (bottomLeftDate.getValue().compareTo(bottomRightDate.getValue()) > 0 ){
             bottomRightDate.setValue(bottomLeftDate.getValue());
@@ -160,6 +164,10 @@ public class HelloController
            }
         bottomChart.getData().addAll(degrees);
     } //opsætter data i nederste chart
+
+    public void setBottomLabels(){
+        //Beregn middelværdi, median og midt af midel, og setLabels
+    } //Median og middelværdi for bottom chart
 
     public void search(ActionEvent actionEvent) {
         List<VejrStation> searchVejrStation = vjs.getSearchedStation(searchBar.getText());
@@ -209,12 +217,38 @@ public class HelloController
         });
     } //Tjek om nederste datepicker skal være disabled
 
+    public void topDataTypeValgt(MouseEvent mouseEvent){
+        topDataTypeChoice.setOnAction((e) -> {
+
+            topDataType = (String) bottomDataTypeChoice.getValue();
+            System.out.println(topDataType + " er valgt");
+        });
+    }
+
+    public void bottomDataTypeValgt(MouseEvent mouseEvent){
+        bottomDataTypeChoice.setOnAction((e) -> {
+
+            bottomDataType = (String) bottomDataTypeChoice.getValue();
+            System.out.println(bottomDataType + " er valgt");
+        });
+    }
+
     public void fjernVisibility() {
         topChart.setVisible(false);
         topChart.getData().clear();
         bottomChart.setVisible(false);
         bottomChart.getData().clear();
     } //Viser og gemmer charts
+
+    /*public String getTopDataType(String topType){
+        topType = topDataType;
+        return topType;
+    }
+
+    public String getBottomDataType(String bottomType){
+        bottomType = bottomDataType;
+        return bottomType;
+    }*/
 
     VejrStationDao vjs = new VejrStationDaoImpl();
 
