@@ -18,7 +18,6 @@ import io.github.palexdev.materialfx.controls.MFXButton;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
-
 import java.awt.*;
 import java.security.spec.ECField;
 import java.sql.SQLException;
@@ -39,14 +38,13 @@ public class HelloController
     @FXML
     private MFXTextField searchBar;
     @FXML
-    private LineChart<String, String> topChart, bottomChart;
+    private LineChart<Number, Number> topChart, bottomChart;
     @FXML
     private Label topMiddelværdi, topMedian, topMidAfMidt, bottomMiddelværdi, bottomMedian, bottomMidAfMidt;
     @FXML
     private Button searchButton;
 
-    public HelloController() throws SQLException {
-    }
+    public HelloController() throws SQLException {}
 
     public void initialize(){
         showWeatherStations();
@@ -105,7 +103,7 @@ public class HelloController
         Axis<Number> xAxis = topChart.getXAxis();
         xAxis.setLabel("Date");
 
-        Axis<String> yAxis = topChart.getYAxis();
+        Axis<Number> yAxis = topChart.getYAxis();
         yAxis.setLabel("Weather");
 
         XYChart.Series<Number, Number> degrees = new XYChart.Series<Number,Number>();
@@ -144,14 +142,15 @@ public class HelloController
     public void generateBottom(ActionEvent actionEvent) {
         fjernVisibility();
         bottomChart.setVisible(true);
-        Axis<String> xAxis = bottomChart.getXAxis();
+        Axis<Number> xAxis = bottomChart.getXAxis();
         xAxis.setLabel("Date");
 
         Axis<Number> yAxis = bottomChart.getYAxis();
         yAxis.setLabel("Weather");
 
-        XYChart.Series<String, String> degrees = new XYChart.Series<String,String>();
-        degrees.setName(String.valueOf(bottomIntervalChoice));
+        XYChart.Series<Number, Number> degrees = new XYChart.Series<Number,Number>();
+
+        List<Måling> målinger = vjs.getMålingData(6041);
 
         System.out.println(målinger.get(0));
 
