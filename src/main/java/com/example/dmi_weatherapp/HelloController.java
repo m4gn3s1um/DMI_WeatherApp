@@ -53,11 +53,11 @@ public class HelloController
     }
 
     public void setDateValue(){
-        topLeftDate.setValue(java.time.LocalDate.now());
-        topRightDate.setValue(java.time.LocalDate.now());
-        bottomLeftDate.setValue(java.time.LocalDate.now());
-        bottomRightDate.setValue(java.time.LocalDate.now());
-    } //Sætter dato i datepicker til dags dato
+        topLeftDate.setValue(java.time.LocalDate.of(2023,01,01));
+        topRightDate.setValue(java.time.LocalDate.of(2023,01,31));
+        bottomLeftDate.setValue(java.time.LocalDate.of(2023,01,01));
+        bottomRightDate.setValue(java.time.LocalDate.of(2023,01,31));
+    } //Sætter dato i datepicker start jan til slut jan
 
     public void setChoiceboxValues (){
         topIntervalChoice.getItems().addAll("Timer", "Døgn", "Uger");
@@ -142,26 +142,61 @@ public class HelloController
     } //Opdaterer en String med dato, som kan bruges til SQL
 
     public void generateBottom(ActionEvent actionEvent) {
-        fjernVisibility();
-        bottomChart.setVisible(true);
-        Axis<Number> xAxis = bottomChart.getXAxis();
-        xAxis.setLabel("Date");
 
-        Axis<Number> yAxis = bottomChart.getYAxis();
-        yAxis.setLabel("Weather");
+        ObservableList valgteIndeks = vejrStationList.getSelectionModel().getSelectedIndices();
 
-        XYChart.Series<Number, Number> degrees = new XYChart.Series<Number,Number>();
+        for(Object indeks : valgteIndeks) {
+            VejrStation vejrSt = (VejrStation) vejrStationList.getItems().get((int) indeks);
 
-        List<Måling> målinger = vjs.getMålingData(6041);
+            System.out.println("GenerateBottom");
+            fjernVisibility();
+            bottomChart.setAnimated(false);
+            bottomChart.setVisible(true);
 
-        System.out.println(målinger.get(0));
+            Axis<Number> xAxis = bottomChart.getXAxis();
+            xAxis.setLabel("Dato");
 
-           for (Måling mål : målinger){
-               degrees.getData().add(new XYChart.Data<>(mål.getMålingID(),Double.valueOf(mål.getNedbør())));
-               System.out.println(mål.getMålingID());
-           }
-        bottomChart.getData().addAll(degrees);
-    } //opsætter data i nederste chart
+            Axis<Number> yAxis = bottomChart.getYAxis();
+            yAxis.setLabel("Vejr");
+
+            XYChart.Series<Number, Number> degrees = new XYChart.Series<Number, Number>();
+
+            List<Måling> målinger = vjs.getMålingData(vejrSt.getStationID(),Timestamp.valueOf(String.valueOf(bottomLeftDate)), Timestamp.valueOf(String.valueOf(bottomRightDate)));
+
+            if (bottomDataTypeChoice.getValue() == "Nedbør") {
+                for (Måling mål : målinger) {
+                    degrees.getData().add(new XYChart.Data<>(Integer.valueOf(mål.getMålDato().substring(8, 10)), Float.valueOf(mål.getNedbør())));
+                    System.out.println(Integer.valueOf(mål.getMålDato().substring(8, 10)));
+                    System.out.println(mål.getMålingID());
+                }
+            }
+
+            if (bottomDataTypeChoice.getValue() == "Nedbørsminutter") {
+                for (Måling mål : målinger) {
+                    degrees.getData().add(new XYChart.Data<>(Integer.valueOf(mål.getMålDato().substring(8, 10)), Float.valueOf(mål.getNedbørsMinutter())));
+                    System.out.println(Integer.valueOf(mål.getMålDato().substring(8, 10)));
+                    System.out.println(mål.getMålingID());
+                }
+            }
+
+            if (bottomDataTypeChoice.getValue() == "Middeltemperatur") {
+                for (Måling mål : målinger) {
+                    degrees.getData().add(new XYChart.Data<>(Integer.valueOf(mål.getMålDato().substring(8, 10)), Float.valueOf(mål.getMiddelTemp())));
+                    System.out.println(Integer.valueOf(mål.getMålDato().substring(8, 10)));
+                    System.out.println(mål.getMålingID());
+                }
+            }
+
+            if (bottomDataTypeChoice.getValue() == "Middelvindhastighed") {
+                for (Måling mål : målinger) {
+                    degrees.getData().add(new XYChart.Data<>(Integer.valueOf(mål.getMålDato().substring(8, 10)), Float.valueOf(mål.getMiddelVind())));
+                    System.out.println(Integer.valueOf(mål.getMålDato().substring(8, 10)));
+                    System.out.println(mål.getMålingID());
+                }
+            }
+
+            bottomChart.getData().addAll(degrees);
+        }} //opsætter data i nederste chart
 
     public void setBottomLabels(){
         //Beregn middelværdi, median og midt af midel, og setLabels
@@ -193,7 +228,7 @@ public class HelloController
                 topRightDate.setDisable(false);
 
             } else if (topIntervalChoice.getValue() == "Uger") {
-                topRightDate.setDisable(false);
+                topRightDate.setDisable(true);
             }
         });
     } //Tjek om øverste datepicker skal være disabled
@@ -237,16 +272,6 @@ public class HelloController
         bottomChart.setVisible(false);
         bottomChart.getData().clear();
     } //Viser og gemmer charts
-
-    /*public String getTopDataType(String topType){
-        topType = topDataType;
-        return topType;
-    }
-
-    public String getBottomDataType(String bottomType){
-        bottomType = bottomDataType;
-        return bottomType;
-    }*/
 
     VejrStationDao vjs = new VejrStationDaoImpl();
 
