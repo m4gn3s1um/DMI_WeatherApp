@@ -20,7 +20,10 @@ import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import java.awt.*;
 import java.security.spec.ECField;
+import java.sql.Date;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public class HelloController
@@ -38,18 +41,21 @@ public class HelloController
     @FXML
     private MFXTextField searchBar;
     @FXML
-    private LineChart<Number, Number> topChart, bottomChart;
+    private LineChart<Number, Number> topChart, bottomChart, topChartHours, bottomChartHours;
     @FXML
     private Label topMiddelværdi, topMedian, topMidAfMidt, bottomMiddelværdi, bottomMedian, bottomMidAfMidt;
     @FXML
     private Button searchButton;
 
+    int i = 0;
+
     public HelloController() throws SQLException {}
 
     public void initialize(){
-        showWeatherStations();
+            showWeatherStations();
         setDateValue();
         setChoiceboxValues();
+        System.out.print(topLeftDate.getValue());
     }
 
     public void setDateValue(){
@@ -92,34 +98,185 @@ public class HelloController
         }
         topFirstDate = String.valueOf(topLeftDate.getValue());
         System.out.println(topFirstDate);
+        System.out.println(Date.valueOf(String.valueOf(topLeftDate.getValue())));
     } //Opdaterer en String med dato, som kan bruges til SQL
 
     public void generateTop(ActionEvent actionEvent) {
-        System.out.println("GenerateTop");
-        fjernVisibility();
-        topChart.setAnimated(false);
-        topChart.setVisible(true);
 
-        Axis<Number> xAxis = topChart.getXAxis();
-        xAxis.setLabel("Date");
+        ObservableList valgteIndeks = vejrStationList.getSelectionModel().getSelectedIndices();
 
-        Axis<Number> yAxis = topChart.getYAxis();
-        yAxis.setLabel("Weather");
+        for(Object indeks : valgteIndeks)
+        {
+            VejrStation vejrSt = (VejrStation) vejrStationList.getItems().get((int)indeks);
 
-        XYChart.Series<Number, Number> degrees = new XYChart.Series<Number,Number>();
+            System.out.println("GenerateTop");
+            fjernVisibility();
+            topChart.setVisible(true);
+
+            Axis<Number> xAxis = topChart.getXAxis();
+            xAxis.setLabel("Dato");
+            Axis<Number> yAxis = topChart.getYAxis();
+            yAxis.setLabel("Vejr");
+
+            Axis<Number> hourxAxis = topChartHours.getXAxis();
+            xAxis.setLabel("Dato");
+            Axis<Number> houryAxis = topChartHours.getYAxis();
+            yAxis.setLabel("Vejr");
+
+            XYChart.Series<Number, Number> days = new XYChart.Series<Number,Number>();
+            XYChart.Series<Number, Number> hours = new XYChart.Series<Number, Number>();
 
 
-        List<Måling> målinger = vjs.getMålingData(6041);
 
-        System.out.println(målinger.get(0));
+            String useThisDate = String.valueOf(topLeftDate.getValue());
 
-           for (Måling mål : målinger){
-               degrees.getData().add(new XYChart.Data<>(Integer.valueOf(mål.getMålDato().substring(8, 10)),Double.valueOf(mål.getNedbør())));
-               System.out.println(Integer.valueOf(mål.getMålDato().substring(8, 10)));
-               System.out.println(mål.getMålingID());
-           }
-        topChart.getData().addAll(degrees);
-    } //Opsætter data i øverste chart
+            int dateCheck = Integer.valueOf(String.valueOf(topLeftDate.getValue()).substring(8,10)) + 6;
+            String numbers = String.valueOf(dateCheck);
+            char first = numbers.charAt(0);
+            char second = numbers.charAt(1);
+
+            StringBuilder dateString = new StringBuilder(String.valueOf(useThisDate));
+
+            dateString.setCharAt(8, first);  // Løs det så man ikke får en fejl hvis det er 01 - 09
+            dateString.setCharAt(9, second);
+
+            List<Måling> målinger = vjs.getMålingData(vejrSt.getStationID(), Timestamp.valueOf(String.valueOf(topLeftDate.getValue() + " 00:00:00")), Timestamp.valueOf(String.valueOf(topRightDate.getValue() + " 23:00:00")));
+            List<Måling> hour_målinger = vjs.getHourData(vejrSt.getStationID(),Timestamp.valueOf(String.valueOf(topLeftDate.getValue() + " 00:00:00")), Timestamp.valueOf(String.valueOf(topLeftDate.getValue() + " 23:00:00")));
+            List<Måling> week_målinger = vjs.getWeekData(vejrSt.getStationID(), Timestamp.valueOf(String.valueOf(topLeftDate.getValue() + " 00:00:00")), Timestamp.valueOf(String.valueOf(dateString + " 23:00:00")));
+
+            if(topDataTypeChoice.getValue() == "Nedbør") {
+                if (topIntervalChoice.getValue() == "Timer") {
+                    topChart.getData().clear();
+                    topChartHours.setVisible(true);
+                    topChart.setVisible(false);
+                    for (Måling mål : hour_målinger) {
+
+                            hours.getData().add(new XYChart.Data<>(Integer.valueOf(mål.getMålDato().substring(11, 13)), Float.valueOf(mål.getNedbør())));
+
+                            System.out.println(mål.getMålingID());
+                    }
+                }
+                if(topIntervalChoice.getValue() == "Døgn"){
+                    topChart.getData().clear();
+                    topChartHours.setVisible(false);
+                    topChart.setVisible(true);
+                    for (Måling mål : målinger) {
+                        days.getData().add(new XYChart.Data<>(Integer.valueOf(mål.getMålDato().substring(8, 10)), Float.valueOf(mål.getNedbør())));
+                        System.out.println(Integer.valueOf(mål.getMålDato().substring(8, 10)));
+                        System.out.println(mål.getMålingID());
+                    }
+                }
+                if(topIntervalChoice.getValue() == "Uger"){
+                    topChart.getData().clear();
+                    topChartHours.setVisible(false);
+                    topChart.setVisible(true);
+                    for (Måling mål : week_målinger) {
+                        days.getData().add(new XYChart.Data<>(Integer.valueOf(mål.getMålDato().substring(8, 10)), Float.valueOf(mål.getNedbør())));
+                        System.out.println(Integer.valueOf(mål.getMålDato().substring(8, 10)));
+                        System.out.println(mål.getMålingID());
+                    }
+                }
+            }
+
+            if(topDataTypeChoice.getValue() == "Nedbørsminutter"){
+                if (topIntervalChoice.getValue() == "Timer") {
+                    topChart.getData().clear();
+                    topChartHours.setVisible(false);
+                    topChart.setVisible(true);
+                    for (Måling mål : hour_målinger) {
+                        hours.getData().add(new XYChart.Data<>(Integer.valueOf(mål.getMålDato().substring(11, 13)), Float.valueOf(mål.getNedbørsMinutter())));
+                        System.out.println(mål.getMålingID());
+                    }
+                }
+                if(topIntervalChoice.getValue() == "Døgn"){
+                    topChart.getData().clear();
+                    topChartHours.setVisible(false);
+                    topChart.setVisible(true);
+                    for (Måling mål : målinger) {
+                        days.getData().add(new XYChart.Data<>(Integer.valueOf(mål.getMålDato().substring(8, 10)), Float.valueOf(mål.getNedbørsMinutter())));
+                        System.out.println(Integer.valueOf(mål.getMålDato().substring(8, 10)));
+                        System.out.println(mål.getMålingID());
+                    }
+                }
+                if(topIntervalChoice.getValue() == "Uger"){
+                    topChart.getData().clear();
+                    topChartHours.setVisible(false);
+                    topChart.setVisible(true);
+                    for (Måling mål : week_målinger) {
+                        days.getData().add(new XYChart.Data<>(Integer.valueOf(mål.getMålDato().substring(8, 10)), Float.valueOf(mål.getNedbørsMinutter())));
+                        System.out.println(Integer.valueOf(mål.getMålDato().substring(8, 10)));
+                        System.out.println(mål.getMålingID());
+                    }
+                }
+            }
+
+            if(topDataTypeChoice.getValue() == "Middeltemperatur"){
+                if (topIntervalChoice.getValue() == "Timer") {
+                    topChart.getData().clear();
+                    topChartHours.setVisible(false);
+                    topChart.setVisible(true);
+                    for (Måling mål : hour_målinger) {
+                        hours.getData().add(new XYChart.Data<>(Integer.valueOf(mål.getMålDato().substring(11, 13)), Float.valueOf(mål.getMiddelTemp())));
+                        System.out.println(mål.getMålingID());
+                    }
+                }
+                if(topIntervalChoice.getValue() == "Døgn"){
+                    topChart.getData().clear();
+                    topChartHours.setVisible(false);
+                    topChart.setVisible(true);
+                    for (Måling mål : målinger) {
+                        days.getData().add(new XYChart.Data<>(Integer.valueOf(mål.getMålDato().substring(8, 10)), Float.valueOf(mål.getMiddelTemp())));
+                        System.out.println(Integer.valueOf(mål.getMålDato().substring(8, 10)));
+                        System.out.println(mål.getMålingID());
+                    }
+                }
+                if(topIntervalChoice.getValue() == "Uger"){
+                    topChart.getData().clear();
+                    topChartHours.setVisible(false);
+                    topChart.setVisible(true);
+                    for (Måling mål : week_målinger) {
+                        days.getData().add(new XYChart.Data<>(Integer.valueOf(mål.getMålDato().substring(8, 10)), Float.valueOf(mål.getMiddelTemp())));
+                        System.out.println(Integer.valueOf(mål.getMålDato().substring(8, 10)));
+                        System.out.println(mål.getMålingID());
+                    }
+                }
+            }
+            if(topDataTypeChoice.getValue() == "Middelvindhastighed"){
+                if (topIntervalChoice.getValue() == "Timer") {
+                    topChart.getData().clear();
+                    topChartHours.setVisible(false);
+                    topChart.setVisible(true);
+                    for (Måling mål : hour_målinger) {
+                        hours.getData().add(new XYChart.Data<>(Integer.valueOf(mål.getMålDato().substring(11, 13)), Float.valueOf(mål.getMiddelVind())));
+                        System.out.println(mål.getMålingID());
+                    }
+                }
+                if(topIntervalChoice.getValue() == "Døgn"){
+                    topChart.getData().clear();
+                    topChartHours.setVisible(false);
+                    topChart.setVisible(true);
+                    for (Måling mål : målinger) {
+                        days.getData().add(new XYChart.Data<>(Integer.valueOf(mål.getMålDato().substring(8, 10)), Float.valueOf(mål.getMiddelVind())));
+                        System.out.println(Integer.valueOf(mål.getMålDato().substring(8, 10)));
+                        System.out.println(mål.getMålingID());
+                    }
+                }
+                if(topIntervalChoice.getValue() == "Uger"){
+                    topChart.getData().clear();
+                    topChartHours.setVisible(false);
+                    topChart.setVisible(true);
+                    for (Måling mål : week_målinger) {
+                        days.getData().add(new XYChart.Data<>(Integer.valueOf(mål.getMålDato().substring(8, 10)), Float.valueOf(mål.getMiddelVind())));
+                        System.out.println(Integer.valueOf(mål.getMålDato().substring(8, 10)));
+                        System.out.println(mål.getMålingID());
+                    }
+                }
+            }
+
+            topChart.getData().addAll(days);
+            topChartHours.getData().addAll(hours);
+
+    } }//Opsætter data i øverste chart
 
     public void setTopLabels(){
         //Beregn middelværdi, median og midt af midel, og setLabels
@@ -213,7 +370,12 @@ public class HelloController
 
     public void vejrStationClicked(MouseEvent mouseEvent) {
         ObservableList valgteIndeks = vejrStationList.getSelectionModel().getSelectedIndices();
-        System.out.println("Weather station is selected");
+
+        for(Object indeks : valgteIndeks)
+        {
+            VejrStation vejrSt = (VejrStation) vejrStationList.getItems().get((int)indeks);
+            System.out.println(vejrSt.getStationID() + " - " + vejrSt.getStationNavn() + " Has been selected");
+        }
     } // Tjekker hvad der bliver valgt på listen med VejrStationer
 
     public void topIntervalValgt(MouseEvent mouseEvent) {
@@ -271,6 +433,10 @@ public class HelloController
         topChart.getData().clear();
         bottomChart.setVisible(false);
         bottomChart.getData().clear();
+        //topChartHours.setVisible(false);
+        //topChartHours.getData().clear();
+        //bottomChartHours.setVisible(false);
+        //bottomChartHours.getData().clear();
     } //Viser og gemmer charts
 
     VejrStationDao vjs = new VejrStationDaoImpl();

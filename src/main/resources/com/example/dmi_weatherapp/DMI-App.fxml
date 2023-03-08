@@ -24,7 +24,7 @@
             <MFXButton layoutX="370.0" layoutY="74.0" onAction="#generateTop" text="Generate" />
             <LineChart fx:id="bottomChart" createSymbols="false" layoutX="54.0" layoutY="477.0" prefHeight="315.0" prefWidth="559.0">
                <xAxis>
-                  <NumberAxis side="BOTTOM" />
+                  <NumberAxis autoRanging="false" lowerBound="1.0" minorTickCount="1" side="BOTTOM" tickLabelGap="1.0" tickUnit="1.0" upperBound="31.0" />
                </xAxis>
                <yAxis>
                   <NumberAxis side="LEFT" />
@@ -42,6 +42,22 @@
             <Label fx:id="bottomMiddelværdi" layoutX="663.0" layoutY="541.0" prefHeight="17.0" prefWidth="60.0" text="Label" />
             <Label fx:id="bottomMedian" layoutX="663.0" layoutY="579.0" prefHeight="17.0" prefWidth="60.0" text="Label" />
             <Label fx:id="bottomMidAfMidt" layoutX="663.0" layoutY="617.0" prefHeight="17.0" prefWidth="60.0" text="Label" />
+            <LineChart fx:id="topChartHours" createSymbols="false" horizontalZeroLineVisible="false" layoutX="54.0" layoutY="87.0" prefHeight="315.0" prefWidth="564.0" verticalZeroLineVisible="false" visible="false">
+               <xAxis>
+                  <NumberAxis autoRanging="false" minorTickCount="1" side="BOTTOM" tickLabelGap="1.0" tickUnit="1.0" upperBound="23.0" />
+               </xAxis>
+               <yAxis>
+                  <NumberAxis side="LEFT" />
+               </yAxis>
+            </LineChart>
+            <LineChart fx:id="bottomChartHours" createSymbols="false" layoutX="54.0" layoutY="477.0" prefHeight="315.0" prefWidth="559.0" visible="false">
+               <xAxis>
+                  <NumberAxis autoRanging="false" minorTickCount="1" side="BOTTOM" tickLabelGap="1.0" tickUnit="1.0" upperBound="24.0" />
+               </xAxis>
+               <yAxis>
+                  <NumberAxis side="LEFT" />
+               </yAxis>
+            </LineChart>
          </children>
       </Pane>
    </center>
