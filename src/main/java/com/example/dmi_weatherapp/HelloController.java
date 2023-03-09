@@ -126,8 +126,6 @@ public class HelloController
             XYChart.Series<Number, Number> days = new XYChart.Series<Number,Number>();
             XYChart.Series<Number, Number> hours = new XYChart.Series<Number, Number>();
 
-
-
             String useThisDate = String.valueOf(topLeftDate.getValue());
 
             int dateCheck = Integer.valueOf(String.valueOf(topLeftDate.getValue()).substring(8,10)) + 6;
@@ -190,8 +188,8 @@ public class HelloController
             if(topDataTypeChoice.getValue() == "Nedbørsminutter"){
                 if (topIntervalChoice.getValue() == "Timer") {
                     topChart.getData().clear();
-                    topChartHours.setVisible(false);
-                    topChart.setVisible(true);
+                    topChartHours.setVisible(true);
+                    topChart.setVisible(false);
                     for (Måling mål : hour_målinger) {
                         hours.getData().add(new XYChart.Data<>(Integer.valueOf(mål.getMålDato().substring(11, 13)), Float.valueOf(mål.getNedbørsMinutter())));
                         System.out.println(mål.getMålingID());
@@ -222,8 +220,8 @@ public class HelloController
             if(topDataTypeChoice.getValue() == "Middeltemperatur"){
                 if (topIntervalChoice.getValue() == "Timer") {
                     topChart.getData().clear();
-                    topChartHours.setVisible(false);
-                    topChart.setVisible(true);
+                    topChartHours.setVisible(true);
+                    topChart.setVisible(false);
                     for (Måling mål : hour_målinger) {
                         hours.getData().add(new XYChart.Data<>(Integer.valueOf(mål.getMålDato().substring(11, 13)), Float.valueOf(mål.getMiddelTemp())));
                         System.out.println(mål.getMålingID());
@@ -253,8 +251,8 @@ public class HelloController
             if(topDataTypeChoice.getValue() == "Middelvindhastighed"){
                 if (topIntervalChoice.getValue() == "Timer") {
                     topChart.getData().clear();
-                    topChartHours.setVisible(false);
-                    topChart.setVisible(true);
+                    topChartHours.setVisible(true);
+                    topChart.setVisible(false);
                     for (Måling mål : hour_målinger) {
                         hours.getData().add(new XYChart.Data<>(Integer.valueOf(mål.getMålDato().substring(11, 13)), Float.valueOf(mål.getMiddelVind())));
                         System.out.println(mål.getMålingID());
@@ -310,7 +308,6 @@ public class HelloController
     public void generateBottom(ActionEvent actionEvent) {
 
         ObservableList valgteIndeks = vejrStationList.getSelectionModel().getSelectedIndices();
-
         for(Object indeks : valgteIndeks) {
             VejrStation vejrSt = (VejrStation) vejrStationList.getItems().get((int) indeks);
 
@@ -321,13 +318,41 @@ public class HelloController
 
             Axis<Number> xAxis = bottomChart.getXAxis();
             xAxis.setLabel("Dato");
-
             Axis<Number> yAxis = bottomChart.getYAxis();
             yAxis.setLabel("Vejr");
 
-            XYChart.Series<Number, Number> degrees = new XYChart.Series<Number, Number>();
+            Axis<Number> hourxAxis = bottomChartHours.getXAxis();
+            xAxis.setLabel("Dato");
+            Axis<Number> houryAxis = bottomChartHours.getYAxis();
+            yAxis.setLabel("Vejr");
 
-            List<Måling> målinger = vjs.getMålingData(vejrSt.getStationID(),Timestamp.valueOf(String.valueOf(bottomLeftDate)), Timestamp.valueOf(String.valueOf(bottomRightDate)));
+            XYChart.Series<Number, Number> days = new XYChart.Series<Number,Number>();
+            XYChart.Series<Number, Number> hours = new XYChart.Series<Number, Number>();
+
+            String useThisDate = String.valueOf(bottomLeftDate.getValue());
+
+            int dateCheck = Integer.valueOf(String.valueOf(bottomLeftDate.getValue()).substring(8,10)) + 6;
+            String numbers = String.valueOf(dateCheck);
+            char first = numbers.charAt(0);
+            char second = numbers.charAt(1);
+
+            StringBuilder dateString = new StringBuilder(String.valueOf(useThisDate));
+
+            if(dateString.charAt(8) == '0' && dateString.charAt(9) =='3' + '2' + '1') {
+                dateString.setCharAt(8, '0');  // Løs det så man ikke får en fejl hvis det er 01 - 09
+                dateString.setCharAt(9,second);
+            }
+            else if(dateString.charAt(8) == '0' && dateString.charAt(9) == '4' + '5' + '6' + '7' + '8' + '9'){
+                dateString.setCharAt(8,'1');
+                dateString.setCharAt(9, second);
+            }
+           // else if(dateString.charAt(8) == '1' && dateString.charAt(9) == '')
+            dateString.setCharAt(8, first);
+            dateString.setCharAt(9, second);
+
+            List<Måling> målinger = vjs.getMålingData(vejrSt.getStationID(), Timestamp.valueOf(String.valueOf(bottomLeftDate.getValue() + " 00:00:00")), Timestamp.valueOf(String.valueOf(bottomRightDate.getValue() + " 23:00:00")));
+            List<Måling> hour_målinger = vjs.getHourData(vejrSt.getStationID(),Timestamp.valueOf(String.valueOf(bottomLeftDate.getValue() + " 00:00:00")), Timestamp.valueOf(String.valueOf(bottomLeftDate.getValue() + " 23:00:00")));
+            List<Måling> week_målinger = vjs.getWeekData(vejrSt.getStationID(), Timestamp.valueOf(String.valueOf(bottomLeftDate.getValue() + " 00:00:00")), Timestamp.valueOf(String.valueOf(dateString + " 23:00:00")));
 
             if(bottomDataTypeChoice.getValue() == "Nedbør") {
                 if (bottomIntervalChoice.getValue() == "Timer") {
