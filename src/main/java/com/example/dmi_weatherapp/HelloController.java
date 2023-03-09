@@ -137,7 +137,16 @@ public class HelloController
 
             StringBuilder dateString = new StringBuilder(String.valueOf(useThisDate));
 
-            dateString.setCharAt(8, first);  // Løs det så man ikke får en fejl hvis det er 01 - 09
+            if(dateString.charAt(8) == '0' && dateString.charAt(9) =='3' + '2' + '1') {
+                dateString.setCharAt(8, '0');  // Løs det så man ikke får en fejl hvis det er 01 - 09
+                dateString.setCharAt(9,second);
+            }
+            else if(dateString.charAt(8) == '0' && dateString.charAt(9) == '4' + '5' + '6' + '7' + '8' + '9'){
+                dateString.setCharAt(8,'1');
+                dateString.setCharAt(9, second);
+            }
+            //else if(dateString.charAt(8) == '1' && dateString.charAt(9) == '')
+            dateString.setCharAt(8, first);
             dateString.setCharAt(9, second);
 
             List<Måling> målinger = vjs.getMålingData(vejrSt.getStationID(), Timestamp.valueOf(String.valueOf(topLeftDate.getValue() + " 00:00:00")), Timestamp.valueOf(String.valueOf(topRightDate.getValue() + " 23:00:00")));
@@ -320,40 +329,136 @@ public class HelloController
 
             List<Måling> målinger = vjs.getMålingData(vejrSt.getStationID(),Timestamp.valueOf(String.valueOf(bottomLeftDate)), Timestamp.valueOf(String.valueOf(bottomRightDate)));
 
-            if (bottomDataTypeChoice.getValue() == "Nedbør") {
-                for (Måling mål : målinger) {
-                    degrees.getData().add(new XYChart.Data<>(Integer.valueOf(mål.getMålDato().substring(8, 10)), Float.valueOf(mål.getNedbør())));
-                    System.out.println(Integer.valueOf(mål.getMålDato().substring(8, 10)));
-                    System.out.println(mål.getMålingID());
+            if(bottomDataTypeChoice.getValue() == "Nedbør") {
+                if (bottomIntervalChoice.getValue() == "Timer") {
+                    bottomChart.getData().clear();
+                    bottomChartHours.setVisible(true);
+                    bottomChart.setVisible(false);
+                    for (Måling mål : hour_målinger) {
+
+                        hours.getData().add(new XYChart.Data<>(Integer.valueOf(mål.getMålDato().substring(11, 13)), Float.valueOf(mål.getNedbør())));
+
+                        System.out.println(mål.getMålingID());
+                    }
+                }
+                if (bottomIntervalChoice.getValue() == "Døgn") {
+                    bottomChart.getData().clear();
+                    bottomChartHours.setVisible(false);
+                    bottomChart.setVisible(true);
+                    for (Måling mål : målinger) {
+                        days.getData().add(new XYChart.Data<>(Integer.valueOf(mål.getMålDato().substring(8, 10)), Float.valueOf(mål.getNedbør())));
+                        System.out.println(Integer.valueOf(mål.getMålDato().substring(8, 10)));
+                        System.out.println(mål.getMålingID());
+                    }
+                }
+                if (bottomIntervalChoice.getValue() == "Uger") {
+                    bottomChart.getData().clear();
+                    bottomChartHours.setVisible(false);
+                    bottomChart.setVisible(true);
+                    for (Måling mål : week_målinger) {
+                        days.getData().add(new XYChart.Data<>(Integer.valueOf(mål.getMålDato().substring(8, 10)), Float.valueOf(mål.getNedbør())));
+                        System.out.println(Integer.valueOf(mål.getMålDato().substring(8, 10)));
+                        System.out.println(mål.getMålingID());
+                    }
+                }
+                if (bottomDataTypeChoice.getValue() == "Nedbørsminutter") {
+                    if (bottomIntervalChoice.getValue() == "Timer") {
+                        bottomChart.getData().clear();
+                        bottomChartHours.setVisible(true);
+                        bottomChart.setVisible(false);
+                        for (Måling mål : hour_målinger) {
+                            hours.getData().add(new XYChart.Data<>(Integer.valueOf(mål.getMålDato().substring(11, 13)), Float.valueOf(mål.getMiddelTemp())));
+                            System.out.println(mål.getMålingID());
+                        }
+                    }
+                    if (bottomIntervalChoice.getValue() == "Døgn") {
+                        bottomChart.getData().clear();
+                        bottomChartHours.setVisible(false);
+                        bottomChart.setVisible(true);
+                        for (Måling mål : målinger) {
+                            days.getData().add(new XYChart.Data<>(Integer.valueOf(mål.getMålDato().substring(8, 10)), Float.valueOf(mål.getMiddelTemp())));
+                            System.out.println(Integer.valueOf(mål.getMålDato().substring(8, 10)));
+                            System.out.println(mål.getMålingID());
+                        }
+                    }
+                    if (bottomIntervalChoice.getValue() == "Uger") {
+                        bottomChart.getData().clear();
+                        bottomChartHours.setVisible(false);
+                        bottomChart.setVisible(true);
+                        for (Måling mål : week_målinger) {
+                            days.getData().add(new XYChart.Data<>(Integer.valueOf(mål.getMålDato().substring(8, 10)), Float.valueOf(mål.getMiddelTemp())));
+                            System.out.println(Integer.valueOf(mål.getMålDato().substring(8, 10)));
+                            System.out.println(mål.getMålingID());
+                        }
+                    }
+                }
+                if (bottomDataTypeChoice.getValue() == "Middeltemperatur") {
+                    if (bottomIntervalChoice.getValue() == "Timer") {
+                        bottomChart.getData().clear();
+                        bottomChartHours.setVisible(true);
+                        bottomChart.setVisible(false);
+                        for (Måling mål : hour_målinger) {
+                            hours.getData().add(new XYChart.Data<>(Integer.valueOf(mål.getMålDato().substring(11, 13)), Float.valueOf(mål.getMiddelTemp())));
+                            System.out.println(mål.getMålingID());
+                        }
+                    }
+                    if (bottomIntervalChoice.getValue() == "Døgn") {
+                        bottomChart.getData().clear();
+                        bottomChartHours.setVisible(false);
+                        bottomChart.setVisible(true);
+                        for (Måling mål : målinger) {
+                            days.getData().add(new XYChart.Data<>(Integer.valueOf(mål.getMålDato().substring(8, 10)), Float.valueOf(mål.getMiddelTemp())));
+                            System.out.println(Integer.valueOf(mål.getMålDato().substring(8, 10)));
+                            System.out.println(mål.getMålingID());
+                        }
+                    }
+                    if (bottomIntervalChoice.getValue() == "Uger") {
+                        bottomChart.getData().clear();
+                        bottomChartHours.setVisible(false);
+                        bottomChart.setVisible(true);
+                        for (Måling mål : week_målinger) {
+                            days.getData().add(new XYChart.Data<>(Integer.valueOf(mål.getMålDato().substring(8, 10)), Float.valueOf(mål.getMiddelTemp())));
+                            System.out.println(Integer.valueOf(mål.getMålDato().substring(8, 10)));
+                            System.out.println(mål.getMålingID());
+                        }
+                    }
+                }
+                if (bottomDataTypeChoice.getValue() == "Middelvindhastighed") {
+                    if (bottomIntervalChoice.getValue() == "Timer") {
+                        bottomChart.getData().clear();
+                        bottomChartHours.setVisible(true);
+                        bottomChart.setVisible(false);
+                        for (Måling mål : hour_målinger) {
+                            hours.getData().add(new XYChart.Data<>(Integer.valueOf(mål.getMålDato().substring(11, 13)), Float.valueOf(mål.getMiddelVind())));
+                            System.out.println(mål.getMålingID());
+                        }
+                    }
+                    if (bottomIntervalChoice.getValue() == "Døgn") {
+                        bottomChart.getData().clear();
+                        bottomChartHours.setVisible(false);
+                        bottomChart.setVisible(true);
+                        for (Måling mål : målinger) {
+                            days.getData().add(new XYChart.Data<>(Integer.valueOf(mål.getMålDato().substring(8, 10)), Float.valueOf(mål.getMiddelVind())));
+                            System.out.println(Integer.valueOf(mål.getMålDato().substring(8, 10)));
+                            System.out.println(mål.getMålingID());
+                        }
+                    }
+                    if (bottomIntervalChoice.getValue() == "Uger") {
+                        bottomChart.getData().clear();
+                        bottomChartHours.setVisible(false);
+                        bottomChart.setVisible(true);
+                        for (Måling mål : week_målinger) {
+                            days.getData().add(new XYChart.Data<>(Integer.valueOf(mål.getMålDato().substring(8, 10)), Float.valueOf(mål.getMiddelVind())));
+                            System.out.println(Integer.valueOf(mål.getMålDato().substring(8, 10)));
+                            System.out.println(mål.getMålingID());
+                        }
+                    }
                 }
             }
-
-            if (bottomDataTypeChoice.getValue() == "Nedbørsminutter") {
-                for (Måling mål : målinger) {
-                    degrees.getData().add(new XYChart.Data<>(Integer.valueOf(mål.getMålDato().substring(8, 10)), Float.valueOf(mål.getNedbørsMinutter())));
-                    System.out.println(Integer.valueOf(mål.getMålDato().substring(8, 10)));
-                    System.out.println(mål.getMålingID());
-                }
-            }
-
-            if (bottomDataTypeChoice.getValue() == "Middeltemperatur") {
-                for (Måling mål : målinger) {
-                    degrees.getData().add(new XYChart.Data<>(Integer.valueOf(mål.getMålDato().substring(8, 10)), Float.valueOf(mål.getMiddelTemp())));
-                    System.out.println(Integer.valueOf(mål.getMålDato().substring(8, 10)));
-                    System.out.println(mål.getMålingID());
-                }
-            }
-
-            if (bottomDataTypeChoice.getValue() == "Middelvindhastighed") {
-                for (Måling mål : målinger) {
-                    degrees.getData().add(new XYChart.Data<>(Integer.valueOf(mål.getMålDato().substring(8, 10)), Float.valueOf(mål.getMiddelVind())));
-                    System.out.println(Integer.valueOf(mål.getMålDato().substring(8, 10)));
-                    System.out.println(mål.getMålingID());
-                }
-            }
-
-            bottomChart.getData().addAll(degrees);
-        }} //opsætter data i nederste chart
+            bottomChart.getData().addAll(days);
+            bottomChartHours.getData().addAll(hours);
+        }
+    } //opsætter data i nederste chart
 
     public void setBottomLabels(){
         //Beregn middelværdi, median og midt af midel, og setLabels
