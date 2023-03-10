@@ -12,18 +12,14 @@ import javafx.scene.chart.Axis;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
-import io.github.palexdev.materialfx.controls.MFXListView;
 import io.github.palexdev.materialfx.controls.MFXTextField;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
-import java.awt.*;
-import java.security.spec.ECField;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public class HelloController
@@ -46,8 +42,6 @@ public class HelloController
     private Label topMiddelværdi, topMedian, topMidAfMidt, bottomMiddelværdi, bottomMedian, bottomMidAfMidt;
     @FXML
     private Button searchButton;
-
-    int i = 0;
 
     public HelloController() throws SQLException {}
 
@@ -110,7 +104,6 @@ public class HelloController
             VejrStation vejrSt = (VejrStation) vejrStationList.getItems().get((int)indeks);
 
             System.out.println("GenerateTop");
-            fjernVisibility();
             topChart.setVisible(true);
 
             Axis<Number> xAxis = topChart.getXAxis();
@@ -143,7 +136,7 @@ public class HelloController
                 dateString.setCharAt(8,'1');
                 dateString.setCharAt(9, second);
             }
-            //else if(dateString.charAt(8) == '1' && dateString.charAt(9) == '')
+
             dateString.setCharAt(8, first);
             dateString.setCharAt(9, second);
 
@@ -248,6 +241,7 @@ public class HelloController
                     }
                 }
             }
+
             if(topDataTypeChoice.getValue() == "Middelvindhastighed"){
                 if (topIntervalChoice.getValue() == "Timer") {
                     topChart.getData().clear();
@@ -282,17 +276,14 @@ public class HelloController
 
             topChart.getData().addAll(days);
             topChartHours.getData().addAll(hours);
-
-    } }//Opsætter data i øverste chart
-
-    public void setTopLabels(){
-        //Beregn middelværdi, median og midt af midel, og setLabels
-    } //Median og middelværdi for top chart
+        }
+    }//Opsætter data i øverste chart
 
     public void bottomRightDateSelected(ActionEvent actionEvent) {
         if (bottomLeftDate.getValue().compareTo(bottomRightDate.getValue()) > 0 ){
             bottomRightDate.setValue(bottomLeftDate.getValue());
         }
+
         bottomSecondDate = String.valueOf(bottomRightDate.getValue());
         System.out.println(bottomSecondDate);
     } //Opdaterer en String med dato, som kan bruges til SQL
@@ -301,6 +292,7 @@ public class HelloController
         if (bottomLeftDate.getValue().compareTo(bottomRightDate.getValue()) > 0 ){
             bottomRightDate.setValue(bottomLeftDate.getValue());
         }
+
         bottomFirstDate = String.valueOf(bottomLeftDate.getValue());
         System.out.println(bottomFirstDate);
     } //Opdaterer en String med dato, som kan bruges til SQL
@@ -346,7 +338,7 @@ public class HelloController
                 dateString.setCharAt(8,'1');
                 dateString.setCharAt(9, second);
             }
-           // else if(dateString.charAt(8) == '1' && dateString.charAt(9) == '')
+
             dateString.setCharAt(8, first);
             dateString.setCharAt(9, second);
 
@@ -386,6 +378,7 @@ public class HelloController
                         System.out.println(mål.getMålingID());
                     }
                 }
+
                 if (bottomDataTypeChoice.getValue() == "Nedbørsminutter") {
                     if (bottomIntervalChoice.getValue() == "Timer") {
                         bottomChart.getData().clear();
@@ -417,6 +410,7 @@ public class HelloController
                         }
                     }
                 }
+
                 if (bottomDataTypeChoice.getValue() == "Middeltemperatur") {
                     if (bottomIntervalChoice.getValue() == "Timer") {
                         bottomChart.getData().clear();
@@ -448,6 +442,7 @@ public class HelloController
                         }
                     }
                 }
+
                 if (bottomDataTypeChoice.getValue() == "Middelvindhastighed") {
                     if (bottomIntervalChoice.getValue() == "Timer") {
                         bottomChart.getData().clear();
@@ -480,14 +475,11 @@ public class HelloController
                     }
                 }
             }
+
             bottomChart.getData().addAll(days);
             bottomChartHours.getData().addAll(hours);
         }
     } //opsætter data i nederste chart
-
-    public void setBottomLabels(){
-        //Beregn middelværdi, median og midt af midel, og setLabels
-    } //Median og middelværdi for bottom chart
 
     public void search(ActionEvent actionEvent) {
         List<VejrStation> searchVejrStation = vjs.getSearchedStation(searchBar.getText());
@@ -537,7 +529,7 @@ public class HelloController
                 bottomRightDate.setDisable(false);
 
             } else if (bottomIntervalChoice.getValue() == "Uger") {
-                bottomRightDate.setDisable(false);
+                bottomRightDate.setDisable(true);
             }
         });
     } //Tjek om nederste datepicker skal være disabled
@@ -545,7 +537,7 @@ public class HelloController
     public void topDataTypeValgt(MouseEvent mouseEvent){
         topDataTypeChoice.setOnAction((e) -> {
 
-            topDataType = (String) bottomDataTypeChoice.getValue();
+            topDataType = (String) topDataTypeChoice.getValue();
             System.out.println(topDataType + " er valgt");
         });
     }

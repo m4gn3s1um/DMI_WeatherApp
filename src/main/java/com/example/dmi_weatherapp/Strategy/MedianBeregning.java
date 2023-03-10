@@ -2,28 +2,25 @@ package com.example.dmi_weatherapp.Strategy;
 
 public class MedianBeregning
 {
-
-    /*@Override
-    public void move(int energy){
+ /*
+    public void Udregning(ArrayList aList){
         do {
-            if (energy > 0){
-                energy--;
-                System.out.println("the animal is moving one step in direction North");
+            if (calculation > 0){
+                calculation--;
+                System.out.println("Calculating the Median");
             }
-        } while (energy > 0);
-        System.out.println("run completed....");
+        } while (calculation > 0);
+       // the array double[] m MUST BE SORT
+            public static double median(double[] m){
+                       int middle = m.length / 2;
+               if (m.length % 2 == 1) {
+                   return m[middle];
+               } else {
+                   return (m[middle - 1] + m[middle]) / 2.0;
+               }
+           }
+        System.out.println("Calculation completed....");
+        calculation++;
     }
-
-    // the array double[] m MUST BE SORTED
-    public static double median(double[] m) {
-    int middle = m.length/2;
-    if (m.length%2 == 1) {
-        return m[middle];
-    } else {
-        return (m[middle-1] + m[middle]) / 2.0;
-    }
-}
-
-     */
-
+    */
 }
