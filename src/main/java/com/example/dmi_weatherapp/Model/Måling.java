@@ -1,5 +1,7 @@
 package com.example.dmi_weatherapp.Model;
 
+import com.example.dmi_weatherapp.Strategy.StrategyPattern;
+
 public class Måling {
 
     private int målingID;
@@ -15,6 +17,7 @@ public class Måling {
     private String højesteVind;
     private String skyhøjde;
     private String skydække;
+
 
     public Måling(int målingID, String målDato, int stationsID,String nedbør, String nedbørsMinutter, String middelTemp,
                   String maksTemp, String minTemp, String solskin, String middelVind, String højesteVind, String skyhøjde, String skydække){
@@ -93,4 +96,5 @@ public class Måling {
                 ", stationsID=" + stationsID +
                 '}';
     }
+
 }

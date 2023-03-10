@@ -1,6 +1,8 @@
 package com.example.dmi_weatherapp.Strategy;
 
-public class MiddelværdiBeregning
+import java.util.ArrayList;
+
+public class MiddelværdiBeregning implements StrategyPattern
 {
 /*
     public void Udregning(ArrayList aList){

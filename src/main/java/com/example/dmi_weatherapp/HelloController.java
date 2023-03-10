@@ -4,7 +4,6 @@ import com.example.dmi_weatherapp.Model.Måling;
 import com.example.dmi_weatherapp.Model.VejrStation;
 import com.example.dmi_weatherapp.DAO.VejrStationDao;
 import com.example.dmi_weatherapp.DAO_Impl.VejrStationDaoImpl;
-import com.example.dmi_weatherapp.Model.VejrStation;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -102,9 +101,10 @@ public class HelloController
         for(Object indeks : valgteIndeks)
         {
             VejrStation vejrSt = (VejrStation) vejrStationList.getItems().get((int)indeks);
-
+    
             System.out.println("GenerateTop");
             topChart.setVisible(true);
+            topChart.getData().clear();
 
             Axis<Number> xAxis = topChart.getXAxis();
             xAxis.setLabel("Dato");
@@ -129,7 +129,7 @@ public class HelloController
             StringBuilder dateString = new StringBuilder(String.valueOf(useThisDate));
 
             if(dateString.charAt(8) == '0' && dateString.charAt(9) =='3' + '2' + '1') {
-                dateString.setCharAt(8, '0');  // Løs det så man ikke får en fejl hvis det er 01 - 09
+                dateString.setCharAt(8, '0');
                 dateString.setCharAt(9,second);
             }
             else if(dateString.charAt(8) == '0' && dateString.charAt(9) == '4' + '5' + '6' + '7' + '8' + '9'){
@@ -147,6 +147,7 @@ public class HelloController
             if(topDataTypeChoice.getValue() == "Nedbør") {
                 if (topIntervalChoice.getValue() == "Timer") {
                     topChart.getData().clear();
+                    topChartHours.getData().clear();
                     topChartHours.setVisible(true);
                     topChart.setVisible(false);
                     for (Måling mål : hour_målinger) {
@@ -181,6 +182,7 @@ public class HelloController
             if(topDataTypeChoice.getValue() == "Nedbørsminutter"){
                 if (topIntervalChoice.getValue() == "Timer") {
                     topChart.getData().clear();
+                    topChartHours.getData().clear();
                     topChartHours.setVisible(true);
                     topChart.setVisible(false);
                     for (Måling mål : hour_målinger) {
@@ -213,6 +215,7 @@ public class HelloController
             if(topDataTypeChoice.getValue() == "Middeltemperatur"){
                 if (topIntervalChoice.getValue() == "Timer") {
                     topChart.getData().clear();
+                    topChartHours.getData().clear();
                     topChartHours.setVisible(true);
                     topChart.setVisible(false);
                     for (Måling mål : hour_målinger) {
@@ -245,6 +248,7 @@ public class HelloController
             if(topDataTypeChoice.getValue() == "Middelvindhastighed"){
                 if (topIntervalChoice.getValue() == "Timer") {
                     topChart.getData().clear();
+                    topChartHours.getData().clear();
                     topChartHours.setVisible(true);
                     topChart.setVisible(false);
                     for (Måling mål : hour_målinger) {
@@ -301,12 +305,12 @@ public class HelloController
 
         ObservableList valgteIndeks = vejrStationList.getSelectionModel().getSelectedIndices();
         for(Object indeks : valgteIndeks) {
+
             VejrStation vejrSt = (VejrStation) vejrStationList.getItems().get((int) indeks);
 
             System.out.println("GenerateBottom");
-            fjernVisibility();
-            bottomChart.setAnimated(false);
             bottomChart.setVisible(true);
+            bottomChart.getData().clear();
 
             Axis<Number> xAxis = bottomChart.getXAxis();
             xAxis.setLabel("Dato");
@@ -314,9 +318,9 @@ public class HelloController
             yAxis.setLabel("Vejr");
 
             Axis<Number> hourxAxis = bottomChartHours.getXAxis();
-            xAxis.setLabel("Dato");
+            hourxAxis.setLabel("Dato");
             Axis<Number> houryAxis = bottomChartHours.getYAxis();
-            yAxis.setLabel("Vejr");
+            houryAxis.setLabel("Vejr");
 
             XYChart.Series<Number, Number> days = new XYChart.Series<Number,Number>();
             XYChart.Series<Number, Number> hours = new XYChart.Series<Number, Number>();
@@ -331,7 +335,7 @@ public class HelloController
             StringBuilder dateString = new StringBuilder(String.valueOf(useThisDate));
 
             if(dateString.charAt(8) == '0' && dateString.charAt(9) =='3' + '2' + '1') {
-                dateString.setCharAt(8, '0');  // Løs det så man ikke får en fejl hvis det er 01 - 09
+                dateString.setCharAt(8, '0');
                 dateString.setCharAt(9,second);
             }
             else if(dateString.charAt(8) == '0' && dateString.charAt(9) == '4' + '5' + '6' + '7' + '8' + '9'){
@@ -349,6 +353,7 @@ public class HelloController
             if(bottomDataTypeChoice.getValue() == "Nedbør") {
                 if (bottomIntervalChoice.getValue() == "Timer") {
                     bottomChart.getData().clear();
+                    bottomChartHours.getData().clear();
                     bottomChartHours.setVisible(true);
                     bottomChart.setVisible(false);
                     for (Måling mål : hour_målinger) {
@@ -382,6 +387,7 @@ public class HelloController
                 if (bottomDataTypeChoice.getValue() == "Nedbørsminutter") {
                     if (bottomIntervalChoice.getValue() == "Timer") {
                         bottomChart.getData().clear();
+                        bottomChartHours.getData().clear();
                         bottomChartHours.setVisible(true);
                         bottomChart.setVisible(false);
                         for (Måling mål : hour_målinger) {
@@ -414,6 +420,7 @@ public class HelloController
                 if (bottomDataTypeChoice.getValue() == "Middeltemperatur") {
                     if (bottomIntervalChoice.getValue() == "Timer") {
                         bottomChart.getData().clear();
+                        bottomChartHours.getData().clear();
                         bottomChartHours.setVisible(true);
                         bottomChart.setVisible(false);
                         for (Måling mål : hour_målinger) {
@@ -447,6 +454,7 @@ public class HelloController
                     if (bottomIntervalChoice.getValue() == "Timer") {
                         bottomChart.getData().clear();
                         bottomChartHours.setVisible(true);
+                        bottomChartHours.getData().clear();
                         bottomChart.setVisible(false);
                         for (Måling mål : hour_målinger) {
                             hours.getData().add(new XYChart.Data<>(Integer.valueOf(mål.getMålDato().substring(11, 13)), Float.valueOf(mål.getMiddelVind())));
@@ -549,17 +557,6 @@ public class HelloController
             System.out.println(bottomDataType + " er valgt");
         });
     }
-
-    public void fjernVisibility() {
-        topChart.setVisible(false);
-        topChart.getData().clear();
-        bottomChart.setVisible(false);
-        bottomChart.getData().clear();
-        //topChartHours.setVisible(false);
-        //topChartHours.getData().clear();
-        //bottomChartHours.setVisible(false);
-        //bottomChartHours.getData().clear();
-    } //Viser og gemmer charts
 
     VejrStationDao vjs = new VejrStationDaoImpl();
 

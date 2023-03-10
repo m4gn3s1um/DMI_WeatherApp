@@ -1,6 +1,6 @@
 package com.example.dmi_weatherapp.Strategy;
 
-public class MidAfMidten
+public class MidAfMidten implements StrategyPattern
 {
 
 /*
