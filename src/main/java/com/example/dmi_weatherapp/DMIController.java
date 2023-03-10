@@ -21,7 +21,7 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.List;
 
-public class HelloController
+public class DMIController
 {
 
     @FXML
@@ -42,7 +42,7 @@ public class HelloController
     @FXML
     private Button searchButton;
 
-    public HelloController() throws SQLException {}
+    public DMIController() throws SQLException {}
 
     public void initialize(){
             showWeatherStations();

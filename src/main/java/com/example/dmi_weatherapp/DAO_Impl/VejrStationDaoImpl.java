@@ -1,16 +1,12 @@
 package com.example.dmi_weatherapp.DAO_Impl;
 
 import com.example.dmi_weatherapp.DAO.VejrStationDao;
-import com.example.dmi_weatherapp.HelloController;
 import com.example.dmi_weatherapp.Model.Måling;
 import com.example.dmi_weatherapp.Model.VejrStation;
 import com.example.dmi_weatherapp.Singleton.SingletonStrategy;
 
 import java.sql.*;
-import java.text.DateFormat;
-import java.time.LocalDate;
 import java.util.ArrayList;
-import java.sql.Date;
 import java.util.LinkedList;
 import java.util.List;
 

@@ -7,11 +7,11 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class HelloApplication extends Application {
+public class DMIApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException
     {
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("DMI-App.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(DMIApplication.class.getResource("DMI-App.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         stage.setTitle("MDI Vejrudsigt!");
         stage.setScene(scene);
