@@ -78,33 +78,6 @@ public class VejrStationDaoImpl implements VejrStationDao {
         return searchedVejrStation;
     }
 
-    public List<Float> getTopChartData(String type, int sID, String fDate, String sDate){
-        List<Float> chartData = new ArrayList<>();
-        try {
-            PreparedStatement ps = con.prepareStatement("SELECT Nedbør FROM MålingTest WHERE StationsID = ?");
-            //ps.setString(1, type);
-            ps.setInt(1,sID);
-            ResultSet rs = ps.executeQuery();
-
-            /*LocalDate målingDate = LocalDate.parse(rs.getString(2));
-            LocalDate firstSelectedDate = LocalDate.parse(fDate);
-            LocalDate secondSelectedDate = LocalDate.parse(sDate);
-            System.out.println(målingDate);
-            System.out.println(firstSelectedDate);
-            System.out.println(secondSelectedDate);*/
-            //while (rs.next() /*&& målingDate.isAfter(firstSelectedDate) && målingDate.isBefore(secondSelectedDate)*/){
-              //  float måling = Float.parseFloat(rs.getString(1));
-
-                //chartData.add(måling);
-            //}
-
-        }catch (SQLException e){
-            System.err.println("Kunne ikke finde data " + e.getMessage());
-        }
-
-        return chartData;
-    }
-
     @Override
     public List<Måling> getMålingData(int sID, Timestamp fDate, Timestamp sDate) {
 

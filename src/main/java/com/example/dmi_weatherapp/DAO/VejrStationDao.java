@@ -15,8 +15,6 @@ public interface VejrStationDao {
 
     public List<VejrStation> getSearchedStation(String query);
 
-    public List<Float> getTopChartData(String type, int sID, String fDate, String sDate);
-
     public List<Måling> getMålingData(int sID, Timestamp fDate, Timestamp sDate);
 
     public List<Måling> getHourData(int sID, Timestamp fDate, Timestamp sDate);
