@@ -21,22 +21,4 @@ public class HelloApplication extends Application {
     public static void main(String[] args) {
         launch();
     }
-
-    //Create object for strategy pattern
-
-    /*// Create animal
-    Animal rr = new Animal ("roadrunner");
-    Animal c = new Animal ("Coyote");
-    // change strategies...
-    //rr.setStrategy(new NormalPattern());
-
-    //run
-    //rr.run(23);
-
-    // change strategy to 2
-    //rr.setStrategy(new ZigZagPattern());
-
-    //run
-    //rr.run(12);*/
-
 }
